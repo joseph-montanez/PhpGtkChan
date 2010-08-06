@@ -1,0 +1,16 @@
+Installing Php-Gtk on Ubuntu 10.4
+    cd ~/
+    svn co http://svn.php.net/repository/gtk/php-gtk/trunk php-gtk
+    sudo aptitude install php5-dev php5-gd libgtk2.0-dev libglade2-dev
+    cd /usr/share/aclocal
+    sudo cp libtool.m4 libtool.m4~backup
+    sudo chmod 777 libtool.m4
+    sudo cat lt~obsolete.m4 ltoptions.m4 ltsugar.m4 ltversion.m4 >>libtool.m4
+    sudo chmod 644 libtool.m4
+    cd ~/php-gtk
+    ./buildconf
+    ./configure
+    make
+    sudo make install
+    sudo pear install --alldeps pear/PEAR#gtk2installer
+    sudo pear -G
