@@ -1,5 +1,13 @@
 <?php
 error_reporting(E_ALL);
+if (!defined('PHP_SHLIB_SUFFIX')) {
+    define('PHP_SHLIB_SUFFIX', (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? 'dll' :  'so');
+}
+
+if (!extension_loaded('gtk2')) {
+    dl('php_gtk2.' . PHP_SHLIB_SUFFIX);
+}
+
 if(!class_exists('gtk')) {
 	die('Please load the php-gtk2 module in your php.ini' . "\r\n");
 }
@@ -61,7 +69,7 @@ class FourChanGui extends GtkWindow
 	}
 	
 	public function click_thread() {
-	
+	    echo "clicked Thread!";
 	}
 
     protected function setup_treeview(GtkTreeView $view) {
