@@ -365,7 +365,7 @@ class Node {
     public function toHtml() 
     {
         $html = $this->getDocument()->saveXML($this->node);
-        Gorilla3D\Dom::fixUtf($html);
+        \Gorilla3D\Dom::fixUtf($html);
         /* 
          * Remove moo ids
          */

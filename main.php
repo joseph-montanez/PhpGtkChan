@@ -1,5 +1,4 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 ini_set('log_errors', 'On');
@@ -9,10 +8,13 @@ if (!defined('PHP_SHLIB_SUFFIX')) {
     define('PHP_SHLIB_SUFFIX', (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? 'dll' : 'so');
 }
 
-
-//-- If this gtk2 not already loaded attempt to do so
+/**
+ * If this gtk2 not already loaded attempt to do so
+ */
 if (!extension_loaded('gtk2')) {
-    //-- Check if we can load gtk2 dynamically
+    /**
+     * Check if we can load gtk2 dynamically
+     */
     $loadable = ini_get('enable_dl');
     if (!empty($loadable)) {
         dl('php_gtk2.' . PHP_SHLIB_SUFFIX);
@@ -20,23 +22,32 @@ if (!extension_loaded('gtk2')) {
 }
 
 if (!class_exists('gtk')) {
+    /**
+     * TODO: retry with php -d and search for the .dll / .so
+     */
     echo "Please load the php-gtk2 module in your php.ini\r\n";
     exit;
 }
 
 require 'Gorilla3D/Dom.php';
 require 'Gorilla3D/Dom/Node.php';
-require 'fourchan/sections.php';
+require 'Chan/Parser.php';
+require 'Fourchan/Sections.php';
+require 'Fourchan/Parser.php';
 
-$wallpaper = Fourchan\SECTIONS_WALLPAPER;
-$parser = new Chan\Parser($wallpaper);
-$parser->getPages($section);
+$parser = new Fourchan\Parser(Fourchan\SECTIONS_WALLPAPER);
+$parser->getPages();
+$parser->getThreads();
+var_dump($parser->threads);
 
 class FourChanGui extends GtkWindow {
 
     function __construct($parent = null) {
         parent::__construct();
 
+        /**
+         * Do I really need this?
+         */
         if ($parent)
             $this->set_screen($parent->get_screen());
         else

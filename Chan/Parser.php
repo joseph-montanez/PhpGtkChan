@@ -2,48 +2,33 @@
 
 namespace Chan;
 
-class Parser {
+interface Parser {
 
-    public $pages = array();
-    public $section = '';
-
-    public function __construct($section = '') {
-        $this->section = $section;
-    }
-
-    public function getSection() {
-        return $this->section;
-    }
+    /**
+     * Get the section that the parser is evaluating
+     * @return string
+     */
+    public function getSection();
 
     /**
      * Set the section of the parse to evaluate
      * @param string $section
      * @return Parser
      */
-    public function setSection($section) {
-        $this->section = $section;
-        return $this;
-    }
+    public function setSection($section);
 
     /**
      * Get the section the parser is evaluating
      * @param string $section
+     * @return Parser
      */
-    public function getSectionPages($section) {
-        $file = file_get_contents($section);
+    public function getPages();
 
-        $dom = new Gorilla3D\Dom($file);
-
-        $this->pages = array($section . 'imgboard.html');
-        foreach ($dom->body->getElements('//*[contains(@class, "pages")]//a') as $anchor) {
-            array_push($this->pages, $section . $anchor->get('href'));
-        }
-
-        var_dump($pages);
-
-        unset($dom);
-        unset($file);
-    }
+    /**
+     * Get the all threads
+     * @return Parser
+     */
+    public function getThreads();
 
 }
 
