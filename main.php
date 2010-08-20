@@ -102,7 +102,29 @@ class FourChanGui extends GtkWindow {
         // Set the path to make sure the selection is selected
         $view->set_cursor($path);
         
+        /** @var GtkTreeModel */
+        $model = $view->get_model();
+        
+        $value = $model->get_value($iter, 0);
+        
+        $sections = Fourchan\Sections::getSections();
+        $url = false;
+        if(isset($sections[$value])) {
+            $url = $sections[$value];
+        } else {
+            echo "fart!\n";
+        }
+        
+        if($url) {
+            $parser = new Fourchan\Parser($url);
+            $parser->getPages();
+            $parser->getThreads();
+            // lots of threads >.<
+            var_dump($parser->threads);
+        }
+        
         /** @var GtkTreeSelection */
+        /* For multiple selections
         $selection = $view->get_selection();
             
         list($model, $arPaths) = $selection->get_selected_rows();
@@ -111,13 +133,10 @@ class FourChanGui extends GtkWindow {
             $iter = $model->get_iter($path);
             echo '  ' . $model->get_value($iter, 0) . "\r\n";
         }
-        /*
-            $parser = new Fourchan\Parser(Fourchan\SECTIONS_WALLPAPER);
-            $parser->getPages();
-            $parser->getThreads();
-            var_dump($parser->threads);
         */
-        echo "clicked Thread!";
+        /*
+        */
+        echo "clicked Thread!" . PHP_EOL;
     }
 
     protected function setup_treeview(GtkTreeView $view) {
@@ -133,8 +152,8 @@ class FourChanGui extends GtkWindow {
         );
 
         // Build Sections
-        $root = $this->store->append(null, array('Anime Wallpaper', '0'));
-        $root2 = $this->store->append(null, array('General Wallpaper', '0'));
+        $root = $this->store->append(null, array('/w/ - Anime/Wallpapers', '0'));
+        $root2 = $this->store->append(null, array('/wg/ - Wallpapers/General', '0'));
 
         // Build Threads
         $child1 = $this->store->append($root, array('Thread 23897346', '0'));
