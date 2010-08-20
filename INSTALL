@@ -1,5 +1,5 @@
 Installing Php-Gtk on Ubuntu 10.4
-    sudo aptitude install php5-dev php5-gd libgtk2.0-dev libglade2-dev
+    sudo apt-get install php5-dev php5-gd libgtk2.0-dev libglade2-dev
     sudo pecl install cairo-beta
     cd ~/
     svn co http://svn.php.net/repository/gtk/php-gtk/trunk php-gtk
