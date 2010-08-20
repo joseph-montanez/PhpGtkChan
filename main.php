@@ -1,4 +1,6 @@
 <?php
+// TODO: make sure data folder is present!
+
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 ini_set('log_errors', 'On');
