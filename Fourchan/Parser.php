@@ -26,7 +26,7 @@ class Parser implements \Chan\Parser {
             $data = \file_get_contents($this->section);
             \file_put_contents($cacheFile, $data);
         } else {
-            $data = \file_get_contents($data);
+            $data = \file_get_contents($cacheFile);
         }
 
         $dom = new \Gorilla3D\Dom($data);
@@ -53,7 +53,7 @@ class Parser implements \Chan\Parser {
                 $data = \file_get_contents($page);
                 \file_put_contents($cacheFile, $data);
             } else {
-                $data = \file_get_contents($data);
+                $data = \file_get_contents($cacheFile);
             }
             
             $dom = new \Gorilla3D\Dom($data);

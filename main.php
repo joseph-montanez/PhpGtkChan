@@ -35,11 +35,6 @@ require 'Chan/Parser.php';
 require 'Fourchan/Sections.php';
 require 'Fourchan/Parser.php';
 
-$parser = new Fourchan\Parser(Fourchan\SECTIONS_WALLPAPER);
-$parser->getPages();
-$parser->getThreads();
-var_dump($parser->threads);
-
 class FourChanGui extends GtkWindow {
 
     function __construct($parent = null) {
@@ -73,11 +68,17 @@ class FourChanGui extends GtkWindow {
         $this->scrolled->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
 
         $this->view = new GtkTreeView();
+        
+        /*
+            Allow multiple selections?
+            $selection = $view->get_selection();
+            $selection->set_mode(Gtk::SELECTION_MULTIPLE);
+        */
 
         // Registar Events
         $veiw_selection = $this->view->get_selection();
         $veiw_selection->connect('changed', array($this, 'changed'));
-        $this->view->connect('row_expanded', array($this, 'click_thread'));
+        $this->view->connect('row_expanded', array($this, 'click_section'));
         $this->connect('destroy', array($this, 'main_quit'));
 
         $this->setup_treeview($this->view);
@@ -97,7 +98,25 @@ class FourChanGui extends GtkWindow {
         
     }
 
-    public function click_thread() {
+    public function click_section(GtkTreeView $view, GtkTreeIter $iter, array $path) {
+        // Set the path to make sure the selection is selected
+        $view->set_cursor($path);
+        
+        /** @var GtkTreeSelection */
+        $selection = $view->get_selection();
+            
+        list($model, $arPaths) = $selection->get_selected_rows();
+        echo "Selection is now:\r\n";
+        foreach ($arPaths as $path) {
+            $iter = $model->get_iter($path);
+            echo '  ' . $model->get_value($iter, 0) . "\r\n";
+        }
+        /*
+            $parser = new Fourchan\Parser(Fourchan\SECTIONS_WALLPAPER);
+            $parser->getPages();
+            $parser->getThreads();
+            var_dump($parser->threads);
+        */
         echo "clicked Thread!";
     }
 
@@ -118,7 +137,11 @@ class FourChanGui extends GtkWindow {
         $root2 = $this->store->append(null, array('General Wallpaper', '0'));
 
         // Build Threads
-        $child = $this->store->append($root, array('Thread 23897346', '0'));
+        $child1 = $this->store->append($root, array('Thread 23897346', '0'));
+        $child2 = $this->store->append($root, array('Thread 23897347', '0'));
+        
+        $child3 = $this->store->append($root2, array('Thread 23897348', '0'));
+        $child4 = $this->store->append($root2, array('Thread 23897349', '0'));
     }
 
 }
