@@ -31,6 +31,7 @@ if (!class_exists('gtk')) {
     exit;
 }
 
+require 'Gorilla3D/Process.php';
 require 'Gorilla3D/Dom.php';
 require 'Gorilla3D/Dom/Node.php';
 require 'Chan/Parser.php';
@@ -109,6 +110,29 @@ class FourChanGui extends GtkWindow {
         
         $value = $model->get_value($iter, 0);
         
+        // Do multi processing here! ~_~
+        // TODO: Detect Windows verse Unix 
+        $proc = new Gorilla3d\Process();
+        // Unix
+        $proc->setCommand("php threads.php &");
+        // Windows
+        //$proc->setCommand("start php threads.php");
+        $proc->open();
+        $proc->write($value);
+        
+        // Keep checking if the process is done
+        foreach(range(1, 6) as $i) {
+            // Needed to not block UI
+            while (Gtk::events_pending()) {
+                Gtk::main_iteration();
+            }
+            // Sleep 0.5 seconds before checking again (locks UI for 1/2 a second
+            usleep(500000);
+            
+            echo "SLEEP!" . PHP_EOL;
+        }
+        $proc->close();
+        /*
         $sections = Fourchan\Sections::getSections();
         $url = false;
         if(isset($sections[$value])) {
@@ -124,7 +148,7 @@ class FourChanGui extends GtkWindow {
             // lots of threads >.<
             var_dump($parser->threads);
         }
-        
+        */
         /** @var GtkTreeSelection */
         /* For multiple selections
         $selection = $view->get_selection();

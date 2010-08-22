@@ -1,5 +1,7 @@
 <?php
-class Gorilla3D_Process
+namespace Gorilla3D;
+
+class Process
 {
     protected $_cwd;
     protected $_command;
@@ -9,7 +11,7 @@ class Gorilla3D_Process
     protected static $_spec = array(
         0 => array("pipe", "r"), 
         1 => array("pipe", "w"), 
-        2 => array("pipe", "r")
+        2 => array("pipe", "w")
     );
     
     private $__process;
@@ -41,7 +43,7 @@ class Gorilla3D_Process
     /**
      * Sets the command to process
      * 
-     * @return Gorilla3D_Process 
+     * @return Process 
      */
     public function setCommand($command)
     {
@@ -62,7 +64,7 @@ class Gorilla3D_Process
     /**
      * Sets the current working directory
      * 
-     * @return Gorilla3D_Process 
+     * @return Process 
      */
     public function setCwd($path)
     {
@@ -84,7 +86,7 @@ class Gorilla3D_Process
      * Starts up the process and opens pipes
      * 
      * @param string $command Command to process
-     * @return Gorilla3D_Process 
+     * @return Process 
      */
     public function open($command = null) 
     {
@@ -105,7 +107,7 @@ class Gorilla3D_Process
      * Writes to pipe
      * 
      * @param string $string
-     * @return Gorilla3D_Process 
+     * @return Process 
      */
     public function write($string)
     {
@@ -124,7 +126,7 @@ class Gorilla3D_Process
      * 
      * @param string &$output The referenced output
      * @param int &$length How far out to read
-     * @return Gorilla3D_Process 
+     * @return Process 
      */
     public function readError(&$output, $length = 4096)
     {
@@ -137,7 +139,7 @@ class Gorilla3D_Process
      * 
      * @param string &$output The referenced output
      * @param int &$length How far out to read
-     * @return Gorilla3D_Process 
+     * @return Process 
      */
     public function readLine(&$output, $length = 4096)
     {
@@ -149,7 +151,7 @@ class Gorilla3D_Process
      * Read until eof from incoming pipe
      * 
      * @param string &$output The referenced output
-     * @return Gorilla3D_Process 
+     * @return Process 
      */    
     public function read(&$output) 
     {
@@ -164,7 +166,7 @@ class Gorilla3D_Process
     /**
      * Safely close all pipes and then the process
      * 
-     * @return Gorilla3D_Process
+     * @return Process
      */
     public function close()
     {
